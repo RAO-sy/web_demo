@@ -99,7 +99,12 @@
 							v-model="sentence">
 						</b-input>
 					</b-field>
-					<b-button type="is-info" class='input-buttom' @click="getdata">Submit</b-button>
+					<b-button 
+						type="is-info" 
+						class='input-buttom' 
+						@click="getdata"
+						>Submit</b-button>
+					<b-loading v-model="isLoading" :can-cancel="false"></b-loading>
 			      </div>
 			    </article>
 			  </div>
@@ -108,17 +113,17 @@
 			    <article class="tile is-child box">
 			      <p class="title">Results</p>
 			      <div class="content">
-					<div style="width:350px;height:350px;margin-left: 150px;" id="mychart"></div>
+					<div style="width:350px;height:350px;margin-left: 72px;" id="mychart"></div>
 			        
-					<div style="width: 300px;margin-left: 175px;">
+					<div style="width: 300px;margin-left: 100px;">
 						<div v-if="prob>70">
-							Fast-DetectGPT criterion is {{crit}}, suggesting that the text has a probability of <b-tag type="is-danger is-light">{{prob}}%</b-tag> to be fake.
+							Fast-DetectGPT criterion is <b-tag type="is-info is-light">{{crit}}</b-tag>, suggesting that the text has a probability of <b-tag type="is-danger is-light">{{prob}}%</b-tag> to be fake.
 						</div>
 						<div v-else-if="prob>40">
-							Fast-DetectGPT criterion is {{crit}}, suggesting that the text has a probability of <b-tag type="is-warning is-light">{{prob}}%</b-tag> to be fake.
+							Fast-DetectGPT criterion is <b-tag type="is-info is-light">{{crit}}</b-tag>, suggesting that the text has a probability of <b-tag type="is-warning is-light">{{prob}}%</b-tag> to be fake.
 						</div>
 						<div v-else>
-							Fast-DetectGPT criterion is {{crit}}, suggesting that the text has a probability of <b-tag type="is-success is-light">{{prob}}%</b-tag> to be fake.
+							Fast-DetectGPT criterion is <b-tag type="is-info is-light">{{crit}}</b-tag>, suggesting that the text has a probability of <b-tag type="is-success is-light">{{prob}}%</b-tag> to be fake.
 						</div>
 					</div>
 			      </div>
@@ -144,6 +149,7 @@ export default {
 		return {
 			reference:"gpt-j-6B",
 			scoring:"gpt-neo-2.7B",
+			isLoading: false,
 			prob:0,
 			crit:0,
 			data:{},
@@ -174,15 +180,23 @@ export default {
 	},
 	methods:{
 		getdata(){
-			currentPOST("result", this.sentence).then(response =>{
+			this.isLoading = true;
+			const ref = this.reference.split('-')[1];
+			const scor = this.scoring.split('-')[1];
+			const api = "result_"+ref+"_"+scor;
+			console.log(api);
+			currentPOST(api, this.sentence).then(response =>{
 				console.log("success",response)
 				this.data = response.data
 				this.prob = response.data["prob"]
 				this.crit = response.data["crit"]
+				this.isLoading = false
 				this.draw()
 			})
 			.catch(error =>{
+				this.isLoading = false
 				console.log("failed!:",error.message)
+				
 			})
 		},
 		draw () {

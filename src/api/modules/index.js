@@ -9,7 +9,16 @@ import * as API from "../api";
 
 
 export const paramType ={
-    "result":'/detect_neo_neo'
+    "result_neo_neo":'/detect_neo_neo',
+	"result_neo_j":'/detect_neo_j',
+	"result_neo_xl":'/detect_neo_xl',
+	"result_j_neo":'/detect_j_neo',
+	"result_j_xl":'/detect_j_xl',
+	"result_j_j":'/detect_j_j',
+	"result_xl_neo":'/detect_xl_neo',
+	"result_xl_j":'/detect_xl_j',
+	"result_xl_xl":'/detect_xl_xl'
+	
 
 // const cors = require("cors");
 // app.use(cors()); //使用cors中间件
