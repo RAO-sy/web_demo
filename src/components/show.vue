@@ -19,13 +19,13 @@
 		    </div>
 		    <div id="navbarMenuHeroB" class="navbar-menu">
 		      <div class="navbar-end">
-		        <a class="navbar-item">
+		        <a class="navbar-item" @click='openPage'>
 		          Home
 		        </a>
-		        <a class="navbar-item">
-		          Examples
-		        </a>
-		        <a class="navbar-item">
+				<a class="navbar-item" @click="openExample">
+					Examples
+				</a>
+		        <a class="navbar-item" href="https://arxiv.org/pdf/2310.05130.pdf" target="_blank">
 		          Documentation
 		        </a>
 		      </div>
@@ -53,12 +53,14 @@
 					  <div class="left-block-radio">
 						<b-radio v-model="reference"
 						  name="name"
-						  native-value="gpt2-xl">
+						  native-value="gpt2-xl"
+						  disabled>
 						  gpt2-xl
 						</b-radio>
 					  	<b-radio v-model="reference"
 						  name="name"
-						  native-value="gpt-neo-2.7B">
+						  native-value="gpt-neo-2.7B"
+						  disabled>
 						  gpt-neo-2.7B
 						</b-radio>
 						<b-radio v-model="reference"
@@ -75,7 +77,8 @@
 						   style="padding-left:34px;">
 						<b-radio v-model="scoring"
 						  name="name1"
-						  native-value="gpt2-xl">
+						  native-value="gpt2-xl"
+						  disabled>
 						  gpt2-xl
 						</b-radio>
 						<b-radio v-model="scoring"
@@ -85,7 +88,8 @@
 						</b-radio>
 						<b-radio v-model="scoring"
 						  name="name1"
-						  native-value="gpt-j-6B">
+						  native-value="gpt-j-6B"
+						  disabled>
 						  gpt-j-6B
 						</b-radio>
 					  </div>
@@ -113,9 +117,9 @@
 			    <article class="tile is-child box">
 			      <p class="title">Results</p>
 			      <div class="content">
-					<div style="width:350px;height:350px;margin-left: 72px;" id="mychart"></div>
+					<div style="width:350px;height:350px;display: block;margin: auto;" id="mychart"></div>
 			        
-					<div style="width: 300px;margin-left: 100px;">
+					<div style="width: 300px;display: block;margin: auto;">
 						<div v-if="prob>70">
 							Fast-DetectGPT criterion is <b-tag type="is-info is-light">{{crit}}</b-tag>, suggesting that the text has a probability of <b-tag type="is-danger is-light">{{prob}}%</b-tag> to be fake.
 						</div>
@@ -179,6 +183,15 @@ export default {
 		
 	},
 	methods:{
+		openPage(){
+			this.$router.push('/')
+		},
+		openExample(){
+			let routeUrl = this.$router.resolve({
+			     path: "/example",
+			   });
+			   window.open(routeUrl.href, '_blank');
+		},
 		getdata(){
 			this.isLoading = true;
 			const ref = this.reference.split('-')[1];

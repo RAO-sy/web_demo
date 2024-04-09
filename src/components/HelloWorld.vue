@@ -21,10 +21,10 @@
 	            <a class="navbar-item is-active">
 	              Home
 	            </a>
-	            <a class="navbar-item">
-	              Examples
+	            <a class="navbar-item" @click="openExample">
+					Examples
 	            </a>
-	            <a class="navbar-item">
+	            <a class="navbar-item" href="https://arxiv.org/pdf/2310.05130.pdf" target="_blank">
 	              Documentation
 	            </a>
 	          </div>
@@ -71,6 +71,12 @@ export default {
     msg: String
   },
   methods:{
+	  openExample(){
+	  	let routeUrl = this.$router.resolve({
+	  	     path: "/example",
+	  	   });
+	  	   window.open(routeUrl.href, '_blank');
+	  },
 	// clickMe() {
 	//     this.$router.push('/show');
 	// }
@@ -95,9 +101,10 @@ a {
   color: #42b983;
 }
 ::v-deep .subtitle {
+	display: block;
+	margin: auto;
     margin-top: -1.25rem;
     width: 1035px;
-    padding-left: 300px;
 	padding-top: 30px;
 }
 </style>
